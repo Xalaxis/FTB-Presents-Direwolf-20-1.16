@@ -1,11 +1,11 @@
-name: Build and Push Latest Versions
+name: Build and Push Container
 
 on:
   push:
     branches:
-      - main
+      - main # When "main" is pushed
   schedule:
-    - cron: '0 3 * * *'
+    - cron: '0 3 * * *' # Everyday at 3AM
 
 env:
   IMAGE_NAME: wolfrazu/ftb-presents-direwolf20-116
@@ -27,12 +27,12 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
-        name: Build and push
+        name: Build and push container
         id: docker_build
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ${{ env.IMAGE_NAME }}:latest
+          tags: ${{ env.IMAGE_NAME }}:latest,${{ env.IMAGE_NAME }}:${{ env.modpack_version }}
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
