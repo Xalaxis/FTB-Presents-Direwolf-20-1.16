@@ -9,6 +9,7 @@ on:
 
 env:
   IMAGE_NAME: wolfrazu/ftb-presents-direwolf20-116
+  MODPACK_ID: 79
 
 jobs:
   main:
@@ -30,7 +31,7 @@ jobs:
         name: Get modpack version
         id: get_modpack_version
         run: |
-          echo "::set-output name=modpack_version::$(curl https://api.modpacks.ch/public/modpack/$MODPACKID/ | jq '.versions[-1].name')"
+          echo "::set-output name=modpack_version::$(curl https://api.modpacks.ch/public/modpack/${{env.MODPACK_ID}}/ | jq '.versions[-1].name')"
       -
         name: Build and push container
         id: docker_build
