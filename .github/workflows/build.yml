@@ -28,8 +28,9 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Get modpack version
+        id: get_modpack_version
         run: |
-          echo "modpack_version=(curl https://api.modpacks.ch/public/modpack/$MODPACKID/ | jq '.versions[-1].id') >> $GITHUB_ENV"
+          echo "::set-output name=modpack_version::$(curl https://api.modpacks.ch/public/modpack/$MODPACKID/ | jq '.versions[-1].name')"
       -
         name: Build and push container
         id: docker_build
@@ -38,7 +39,7 @@ jobs:
           push: true
           tags: |
             ${{ env.IMAGE_NAME }}:latest
-            ${{ env.IMAGE_NAME }}:${{ env.modpack_version }}
+            ${{ env.IMAGE_NAME }}:${{ steps.get_modpack_version.outputs.modpack_version }}
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
