@@ -1,4 +1,4 @@
-name: Build and push Container
+name: Build and Push Container
 
 on:
   push:
@@ -13,7 +13,7 @@ env:
 
 jobs:
   main:
-    name: Build and push container
+    name: Build and Push container
     runs-on: ubuntu-latest
     steps:
       -
