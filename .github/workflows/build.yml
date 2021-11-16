@@ -33,6 +33,7 @@ jobs:
         id: get_modpack_version
         run: |
           echo "::set-output name=modpack_version::$(curl https://api.modpacks.ch/public/modpack/${{env.MODPACK_ID}}/ | jq '.versions[-1].name' | tr -d '"')"
+          echo "::notice title={Latest modpack version}::{Latest version available is $({ steps.get_modpack_version.outputs.modpack_version })}"
       -
         name: Build and push container
         id: docker_build
@@ -43,5 +44,5 @@ jobs:
             ${{ env.IMAGE_NAME }}:latest
             ${{ env.IMAGE_NAME }}:${{ steps.get_modpack_version.outputs.modpack_version }}
       -
-        name: Image digest
+        name: Print Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
